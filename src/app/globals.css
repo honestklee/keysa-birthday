@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Patrick+Hand&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap');
+
+/* SINTAKSIS BARU TAILWIND v4 */
+@import "tailwindcss";
+
+:root {
+  --font-serif: 'Playfair Display', serif;
+  --font-cursive: 'Great Vibes', cursive;
+  --font-handwriting: 'Patrick Hand', cursive;
+  --font-yellowtail: 'Yellowtail', cursive;
+  
+  /* Color Palette */
+  --color-cream: #FEF9E1;
+  --color-beige: #E5D0AC;
+  --color-red: #A31D1D;
+  --color-dark-red: #6D2323;
+}
+
+.yellowtail-regular {
+  font-family: "Yellowtail", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  background-color: var(--color-dark-red);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Membatasi container utama agar selalu berukuran layar HP (Mobile Viewport Lock) */
+.mobile-container {
+  width: 100%;
+  max-width: 430px; /* Ukuran standar iPhone Pro Max / HP modern */
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Mencegah scrollbar bawaan browser merusak estetika */
+.mobile-container::-webkit-scrollbar {
+  width: 4px;
+}
+.mobile-container::-webkit-scrollbar-thumb {
+  background: var(--color-beige);
+  border-radius: 10px;
+}
