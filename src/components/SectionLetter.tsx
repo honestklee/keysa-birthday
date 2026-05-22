@@ -1,10 +1,61 @@
 'use client';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 export default function SectionLetter() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isIntersectingRef = useRef(true);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersectingRef.current = entry.isIntersecting;
+        
+        // If scrolled away and video is playing, pause it
+        if (!entry.isIntersecting && videoRef.current && !videoRef.current.paused) {
+          videoRef.current.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const handleVideoPlay = () => {
+    // When the video plays, pause the background music
+    window.dispatchEvent(new CustomEvent('pause-bg-music'));
+  };
+
+  const handleVideoPause = () => {
+    // If the section is scrolled out of view, keep bg music paused!
+    if (!isIntersectingRef.current) {
+      console.log("Keyca.mp4 paused due to section transition. Keeping bg music paused.");
+    } else {
+      // When the video is paused manually or ends, resume the background music
+      window.dispatchEvent(new CustomEvent('resume-bg-music'));
+    }
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(err => console.log('Video play failed:', err));
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
+
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[#6D2323]">
+    <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[#6D2323]">
 
       {/* BACKGROUND: Crumpled paper background texture */}
       <img
@@ -126,14 +177,50 @@ export default function SectionLetter() {
         />
       </motion.div>
 
-      {/* LETTER CONTENT WRITTEN DIRECTLY ON PAPER CONTAINER */}
-      <div className="relative z-20 max-w-[280px] text-center mx-auto mt-[220px] mb-[185px] px-4 font-serif text-[#6D2323] leading-relaxed select-none">
-        <h3 className="yellowtail-regular text-3xl mb-4 text-[#A31D1D] drop-shadow-sm">
-          Dear My Love Keysaa,
-        </h3>
-        <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium">
-          Happy level up day! Terima kasih ya sudah menjadi bagian paling indah dari hariku. Di scrapbook digital ini aku simpan semua potongan senyummu, tawamu, dan momen-momen manis kita. Semoga hari-harimu selalu dipenuhi kebahagiaan hangat, sehangat kasih sayang yang selalu ku kirimkan untukmu.
-        </p>
+      {/* CONTENT CONTAINER: Video & Letter Text */}
+      <div className="relative z-20 flex flex-col items-center max-w-[320px] mx-auto mt-[80px] mb-[100px] px-4 select-none">
+        
+        {/* VIDEO CONTAINER */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 15 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative w-full mb-8"
+        >
+          {/* Subtle elegant background shadow glow */}
+          <div className="absolute inset-0 bg-[#A31D1D]/10 rounded-2xl blur-md -z-10" />
+          
+          <video
+            ref={videoRef}
+            src="/letter-images/Keyca.mp4"
+            loop
+            playsInline
+            controls
+            onPlay={handleVideoPlay}
+            onPause={handleVideoPause}
+            onClick={togglePlay}
+            className="w-full h-auto rounded-2xl bg-black border-4 border-[#E5D0AC] shadow-2xl cursor-pointer"
+          />
+        </motion.div>
+
+        {/* LETTER CONTENT WRITTEN DIRECTLY ON PAPER CONTAINER */}
+        <div className="text-center font-serif text-[#6D2323] leading-relaxed">
+          <h3 className="yellowtail-regular text-3xl mb-4 text-[#A31D1D] drop-shadow-sm">
+            Dear, My Love Ecaa.
+          </h3>
+          <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium">
+            Happy birthday to my most beautiful woman, my sweetest woman, and my beloved woman, I hope that at your age you can achieve what you want, become even better, become even smarter, once again happy 17th birthday keysa.
+          </p>
+          <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium mt-4">
+            Thank you for always bringing happiness and warmth into my life. No matter how hard the days are, your smile will always be my favorite place to come home to. I just want you to know that I'll always be by your side in every laugh, every tear, every moment, anytime and anywhere. I’m so lucky to have someone as special as you, and I hope this year brings you as much love and happiness as you’ve brought into my life. I love you endlessly.
+          </p>
+          <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium mt-4">
+            regards,
+            <br />
+            Ryu
+          </p>
+        </div>
       </div>
 
       {/* WAX SEAL STAMP BUTTON CENTERED AT THE VERY BOTTOM */}

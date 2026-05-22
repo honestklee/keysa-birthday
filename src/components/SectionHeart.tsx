@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 export default function SectionHeart() {
@@ -26,34 +26,57 @@ export default function SectionHeart() {
     "/you/We.png"
   ];
 
+  // State to hold randomized photos after mounting to avoid hydration mismatch
+  const [randomizedPhotos, setRandomizedPhotos] = useState<string[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    // Count the number of active photo slots
+    const totalSlots = heartPattern.flat().filter(cell => cell === 1).length;
+    // Generate random photos for each slot
+    const randomArray = Array.from({ length: totalSlots }).map(() => {
+      const randomIndex = Math.floor(Math.random() * samplePhotos.length);
+      return samplePhotos[randomIndex];
+    });
+    setRandomizedPhotos(randomArray);
+  }, []);
+
+  let photoSequenceCounter = 0;
+
   return (
     <section className="min-h-screen bg-[#6D2323] flex flex-col items-center justify-between py-12 px-6 relative select-none overflow-hidden">
-      {/* BACKGROUND: bg-maroon-texture */}
-      <img src="/images/bg-maroon-texture.png" alt="" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+      {/* BACKGROUND: re-letter-bg */}
+      <img src="/Love/re-letter-bg.png" alt="" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
 
       <div className="w-full flex-1 flex flex-col justify-center items-center relative z-10">
         
         {/* HEART COLLAGE GRID */}
-        <div className="grid grid-cols-7 gap-1 w-full max-w-[340px] aspect-square">
-          {heartPattern.flatMap((row, rIdx) =>
+        <div className="grid grid-cols-7 gap-1.5 w-full max-w-[340px] aspect-square">
+          {isMounted && randomizedPhotos.length > 0 && heartPattern.flatMap((row, rIdx) =>
             row.map((isPhoto, cIdx) => {
               if (isPhoto) {
-                // Gunakan formula koordinat deterministik untuk menghindari mismatch SSR Math.random()
-                const photoIndex = (rIdx * 3 + cIdx * 2) % samplePhotos.length;
-                const currentImg = samplePhotos[photoIndex];
+                const photoSeqId = photoSequenceCounter++;
+                const currentImg = randomizedPhotos[photoSeqId] || samplePhotos[0];
                 return (
                   <motion.div
                     key={`${rIdx}-${cIdx}`}
-                    initial={{ opacity: 0, scale: 0.6 }}
+                    initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: (rIdx + cIdx) * 0.04, duration: 0.4 }}
-                    whileHover={{ scale: 1.1, zIndex: 10 }}
-                    className="w-full h-full bg-[#E5D0AC] border-[0.5px] border-[#FEF9E1] overflow-hidden shadow-sm"
+                    transition={{ 
+                      delay: photoSeqId * 0.045, 
+                      duration: 0.35,
+                      type: 'spring',
+                      stiffness: 110,
+                      damping: 12
+                    }}
+                    whileHover={{ scale: 1.15, zIndex: 10 }}
+                    className="w-full h-full bg-[#E5D0AC] border-[0.5px] border-[#FEF9E1] overflow-hidden shadow-sm rounded-sm"
                   >
                     <img
                       src={currentImg}
                       alt="Grid memory"
-                      className="w-full h-full object-cover filter grayscale contrast-125"
+                      className="w-full h-full object-cover filter grayscale contrast-125 hover:filter-none transition-all duration-300"
                     />
                   </motion.div>
                 );
@@ -71,9 +94,9 @@ export default function SectionHeart() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
             style={{ fontFamily: 'var(--font-yellowtail)' }}
-            className="text-4xl md:text-5xl text-[#FEF9E1] leading-tight yellowtail-regular"
+            className="text-4xl md:text-5xl text-[#FEF9E1] leading-tight yellowtail-regular drop-shadow-lg"
           >
-            happy birthday love
+            happy birthday my love
           </motion.h1>
         </div>
 
