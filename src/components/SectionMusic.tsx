@@ -94,7 +94,7 @@ export default function SectionMusic() {
             {/* Photo inside Polaroid - rendered above the black cutout */}
             <div className="absolute left-[16px] right-[16px] top-[15px] bottom-[54px] z-25 overflow-hidden flex items-center justify-center bg-[#1a1a1a]">
               <img
-                src="/you/Cantik.png"
+                src="/you/utama.jpg"
                 alt="Memory portrait"
                 className="w-full h-full object-cover filter contrast-[1.1] brightness-[0.95]"
               />
@@ -107,7 +107,7 @@ export default function SectionMusic() {
                 transform: 'rotate(-2deg)'
               }}
             >
-              23 - 05 - 2026
+              19 - 10 - 2026
             </span>
           </div>
         </motion.div>

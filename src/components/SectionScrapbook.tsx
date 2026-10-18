@@ -281,7 +281,7 @@ export default function SectionScrapbook() {
           style={{ fontFamily: 'var(--font-yellowtail)' }} 
           className="text-[#FEF9E1] text-3xl mb-1 drop-shadow-sm text-center yellowtail-regular"
         >
-          {isLit ? "Make A Wish" : "Happy Birthday Eca"}
+          {isLit ? "Make A Wish" : "Happy Birthday Sayang"}
         </h4>
         <p className="text-[#E5D0AC] text-[11px] text-center max-w-[260px] opacity-90 leading-relaxed font-sans transition-all duration-300 mb-8">
           {isLit 

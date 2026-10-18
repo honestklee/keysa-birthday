@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
   const isPausedByVideoRef = useRef(false);
+  const isMutedRef = useRef(false);
 
   useEffect(() => {
     // Create the audio loop element
-    const audio = new Audio('/music/Cinnamon Girl-LanaDelRey.mp3');
+    const audio = new Audio('/music/Backstreet_Boys_-_Shape_of_My_Heart_(mp3.pm).mp3');
     audio.loop = true;
     audio.volume = 0.55;
     audioRef.current = audio;
@@ -27,12 +27,11 @@ export default function BackgroundMusic() {
 
     // Direct background play attempt on any scroll or click
     const handleAutoplayAttempt = () => {
-      if (isPausedByVideoRef.current) return;
+      if (isPausedByVideoRef.current || isMutedRef.current) return;
 
       if (audio.paused) {
         audio.play()
           .then(() => {
-            setIsPlaying(true);
             setShowOverlay(false);
             removeAutoplayListeners();
           })
@@ -46,16 +45,38 @@ export default function BackgroundMusic() {
       isPausedByVideoRef.current = true;
       if (audioRef.current && !audioRef.current.paused) {
         audioRef.current.pause();
-        setIsPlaying(false);
       }
     };
 
     const handleResumeBg = () => {
       isPausedByVideoRef.current = false;
-      if (audioRef.current && audioRef.current.paused) {
-        audioRef.current.play()
-          .then(() => setIsPlaying(true))
+      if (!isMutedRef.current && audio.paused) {
+        audio.play()
           .catch((err) => console.log("Failed to resume bg music:", err));
+      }
+    };
+
+    const handleVolumeChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ volume: number; muted: boolean }>).detail;
+      if (
+        !detail ||
+        !Number.isFinite(detail.volume) ||
+        detail.volume < 0 ||
+        detail.volume > 1 ||
+        typeof detail.muted !== 'boolean'
+      ) {
+        console.error('Invalid background music volume control event.');
+        return;
+      }
+
+      audio.volume = detail.volume;
+      audio.muted = detail.muted;
+      isMutedRef.current = detail.muted;
+
+      if (detail.muted) {
+        audio.pause();
+      } else if (!isPausedByVideoRef.current && audio.paused) {
+        audio.play().catch((err) => console.error("Audio playback failed:", err));
       }
     };
 
@@ -65,6 +86,7 @@ export default function BackgroundMusic() {
     window.addEventListener('pause-bg-music', handlePauseBg);
     window.addEventListener('resume-bg-music', handleResumeBg);
     window.addEventListener('remove-autoplay-listeners', handleRemoveAutoplay);
+    window.addEventListener('background-music-volume', handleVolumeChange);
 
     return () => {
       audio.pause();
@@ -72,22 +94,21 @@ export default function BackgroundMusic() {
       window.removeEventListener('pause-bg-music', handlePauseBg);
       window.removeEventListener('resume-bg-music', handleResumeBg);
       window.removeEventListener('remove-autoplay-listeners', handleRemoveAutoplay);
+      window.removeEventListener('background-music-volume', handleVolumeChange);
     };
   }, []);
 
   const handleStartMusic = () => {
     if (audioRef.current) {
+      isMutedRef.current = false;
+      audioRef.current.muted = false;
       audioRef.current.play()
         .then(() => {
-          setIsPlaying(true);
           setShowOverlay(false);
           window.dispatchEvent(new CustomEvent('remove-autoplay-listeners'));
         })
         .catch((err) => {
           console.error("Audio trigger failed: ", err);
-          setIsPlaying(true);
-          setShowOverlay(false);
-          window.dispatchEvent(new CustomEvent('remove-autoplay-listeners'));
         });
     }
   };
@@ -122,7 +143,7 @@ export default function BackgroundMusic() {
                 style={{ fontFamily: 'var(--font-yellowtail)' }} 
                 className="text-[34px] sm:text-[38px] text-[#FEF9E1] yellowtail-regular mb-10 drop-shadow-md"
               >
-                Special gift for Keysaa...
+                Special gift for Mutiaaaaa...
               </h2>
 
               {/* Embossed Wax Seal Button */}
@@ -150,34 +171,6 @@ export default function BackgroundMusic() {
         )}
       </AnimatePresence>
 
-      {/* 2. FLOATING VINTAGE PLAY/PAUSE TOGGLE */}
-      <div className="fixed bottom-4 left-4 z-[9999] flex items-center justify-center">
-        <button 
-          onClick={() => {
-            if (!audioRef.current) return;
-            if (isPlaying) {
-              audioRef.current.pause();
-              setIsPlaying(false);
-            } else {
-              audioRef.current.play()
-                .then(() => setIsPlaying(true));
-            }
-          }}
-          className="w-10 h-10 bg-[#A31D1D] hover:bg-[#6D2323] text-white rounded-full flex items-center justify-center shadow-lg border border-[#FEF9E1]/30 transition-all scale-95 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
-        >
-          {isPlaying ? (
-            // Sound On Icon
-            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-            </svg>
-          ) : (
-            // Muted Icon
-            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-            </svg>
-          )}
-        </button>
-      </div>
     </>
   );
 }

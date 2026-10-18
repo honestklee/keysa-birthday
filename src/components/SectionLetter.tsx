@@ -37,7 +37,7 @@ export default function SectionLetter() {
   const handleVideoPause = () => {
     // If the section is scrolled out of view, keep bg music paused!
     if (!isIntersectingRef.current) {
-      console.log("Keyca.mp4 paused due to section transition. Keeping bg music paused.");
+      console.log("Netflix.mp4 paused due to section transition. Keeping bg music paused.");
     } else {
       // When the video is paused manually or ends, resume the background music
       window.dispatchEvent(new CustomEvent('resume-bg-music'));
@@ -131,38 +131,7 @@ export default function SectionLetter() {
         />
       </motion.div>
 
-      {/* STICKER 5: MOON STICKER (LEFT-BOTTOM-MIDDLE) */}
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        className="absolute bottom-[240px] -left-12 z-10 w-[140px] h-[140px] pointer-events-none drop-shadow-md"
-      >
-        <img
-          src="/letter-images/moon-sticker.png"
-          alt="Blood Moon"
-          className="w-full h-full object-contain"
-        />
-      </motion.div>
-
-      {/* STICKER 6: NEWSPAPER HEART WITH RED RIBBON (RIGHT-BOTTOM-MIDDLE) */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-        className="absolute bottom-[210px] -right-8 z-10 w-[160px] h-[160px] pointer-events-none drop-shadow-md"
-        style={{ mixBlendMode: 'multiply' }}
-      >
-        <img
-          src="/letter-images/newspaper-heart-sticker.png"
-          alt="Newspaper Heart sticker"
-          className="w-full h-full object-contain"
-        />
-      </motion.div>
-
-      {/* STICKER 7: RED PAGE CORNER PAGES LAYER (BOTTOM-LEFT) */}
+      {/* STICKER 5: RED PAGE CORNER PAGES LAYER (BOTTOM-LEFT) */}
       <motion.div
         initial={{ opacity: 0, y: 50, x: -50 }}
         whileInView={{ opacity: 1, y: 0, x: 0 }}
@@ -193,7 +162,7 @@ export default function SectionLetter() {
           
           <video
             ref={videoRef}
-            src="/letter-images/Keyca.mp4"
+            src="/letter-images/Netflix.mp4"
             loop
             playsInline
             controls
@@ -207,18 +176,15 @@ export default function SectionLetter() {
         {/* LETTER CONTENT WRITTEN DIRECTLY ON PAPER CONTAINER */}
         <div className="text-center font-serif text-[#6D2323] leading-relaxed">
           <h3 className="yellowtail-regular text-3xl mb-4 text-[#A31D1D] drop-shadow-sm">
-            Dear, My Love Ecaa.
+            Dear, My Favorite Person.
           </h3>
           <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium">
-            Happy birthday to my most beautiful woman, my sweetest woman, and my beloved woman, I hope that at your age you can achieve what you want, become even better, become even smarter, once again happy 17th birthday keysa.
-          </p>
-          <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium mt-4">
-            Thank you for always bringing happiness and warmth into my life. No matter how hard the days are, your smile will always be my favorite place to come home to. I just want you to know that I'll always be by your side in every laugh, every tear, every moment, anytime and anywhere. I’m so lucky to have someone as special as you, and I hope this year brings you as much love and happiness as you’ve brought into my life. I love you endlessly.
+            Halo Bubb, wilujeng tepang taun yaa, mugia panjang yuswa, séhat walafiat, salawasna dipaparin rezeki anu seueur, tiasa ngahontal sagala rupa anu dijangka dina payunna, kuring bagja pisan tiasa kenal sareng anjeun, tur janten partner ogé supporter dina hirup kuring pikeun ayeuna mugia tiasa dugi ka salamina, sumanget teras yaa naon waé anu ku anjeun lakukeun kuring bakal teras aya di pengker anjeun malah mah dina waktos kuring tebih atanapi teu aya di gigireun anjeun, naon waé pokona kuring palay anjeun bagja teras. I love you bub.
           </p>
           <p className="text-[13px] sm:text-[14px] italic leading-loose text-justify px-2 drop-shadow-sm font-medium mt-4">
             regards,
             <br />
-            Ryu
+            Kak Ryu
           </p>
         </div>
       </div>
