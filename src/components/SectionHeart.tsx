@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 type HeartMedia = {
@@ -35,11 +35,66 @@ const mediaFiles: HeartMedia[] = [
   { filename: 'WhatsApp Video 2026-10-18 at 14.04.44.mp4', type: 'video' },
 ];
 
+const imageMedia = mediaFiles.filter(media => media.type === 'image');
 const totalPhotoSlots = heartPattern.flat().filter(cell => cell === 1).length;
 const assignedHeartMedia = Array.from(
   { length: totalPhotoSlots },
-  (_, index) => mediaFiles[index % mediaFiles.length]
+  (_, index) =>
+    index < mediaFiles.length
+      ? mediaFiles[index]
+      : imageMedia[(index - mediaFiles.length) % imageMedia.length]
 );
+
+function HeartVideoPreview({ src }: { src: string }) {
+  const previewRef = useRef<HTMLVideoElement | null>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const video = previewRef.current;
+    if (!video) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '120px' }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <>
+      <video
+        ref={previewRef}
+        src={shouldLoad ? src : undefined}
+        muted
+        playsInline
+        preload={shouldLoad ? 'metadata' : 'none'}
+        onLoadedMetadata={event => {
+          const video = event.currentTarget;
+          if (video.duration > 0) video.currentTime = Math.min(0.1, video.duration / 2);
+        }}
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <span className="absolute inset-0 flex items-center justify-center bg-black/20 text-[#FEF9E1]">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-current drop-shadow">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+    </>
+  );
+}
 
 export default function SectionHeart() {
   const [musicVolume, setMusicVolume] = useState(55);
@@ -120,9 +175,7 @@ export default function SectionHeart() {
                       aria-label={`Tonton video kenangan ${currentMedia.filename}`}
                       className="group relative flex h-full w-full items-center justify-center overflow-hidden rounded-sm border-[0.5px] border-[#FEF9E1] bg-[#6D2323] text-[#FEF9E1] shadow-sm transition-transform hover:z-10 hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FEF9E1]"
                     >
-                      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-current transition-transform group-hover:scale-125">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+                      <HeartVideoPreview src={mediaSrc} />
                     </button>
                   ) : (
                     <div
