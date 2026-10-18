@@ -10,6 +10,8 @@ export default function SectionMusic() {
       <img
         src="/images/bg-maroon-texture.png"
         alt=""
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
       />
 
@@ -27,6 +29,8 @@ export default function SectionMusic() {
           <img
             src="/music-letter/lyric-layer.png"
             alt="Lana Del Rey lyrics"
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto object-contain"
           />
         </motion.div>
@@ -42,6 +46,8 @@ export default function SectionMusic() {
           <img
             src="/music-letter/candle-love-sticker.png"
             alt="Wax Seal sticker"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain filter brightness-[0.8] contrast-125 rotate-[5deg]"
           />
         </motion.div>
@@ -57,6 +63,8 @@ export default function SectionMusic() {
           <img
             src="/music-letter/channel-parfume.png"
             alt="Chanel Parfume"
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto object-contain cursor-pointer active:scale-95 transition-transform"
           />
         </motion.div>
@@ -72,6 +80,8 @@ export default function SectionMusic() {
           <img
             src="/music-letter/image-removebg-preview.png"
             alt="Red Butterfly"
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto object-contain"
           />
         </motion.div>
@@ -89,6 +99,8 @@ export default function SectionMusic() {
             <img
               src="/music-letter/pollarod-for-picture.png"
               alt="Polaroid frame"
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none"
             />
             {/* Photo inside Polaroid - rendered above the black cutout */}
@@ -96,6 +108,8 @@ export default function SectionMusic() {
               <img
                 src="/you/utama.jpg"
                 alt="Memory portrait"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover filter contrast-[1.1] brightness-[0.95]"
               />
             </div>
@@ -123,6 +137,8 @@ export default function SectionMusic() {
           <img
             src="/music-letter/music-card.png"
             alt="Cinnamon Girl Music Player"
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto object-contain rounded-lg border border-[#A31D1D]/30"
           />
         </motion.div>

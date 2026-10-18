@@ -61,6 +61,8 @@ export default function SectionLetter() {
       <img
         src="/images/bg-maroon-texture.png"
         alt=""
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
       />
 
@@ -68,6 +70,8 @@ export default function SectionLetter() {
       <img
         src="/letter-images/bg-section-letter.png"
         alt=""
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
       />
 
@@ -82,6 +86,8 @@ export default function SectionLetter() {
         <img
           src="/letter-images/cd-sticker.png"
           alt="Lust for Life CD"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain"
         />
       </motion.div>
@@ -97,6 +103,8 @@ export default function SectionLetter() {
         <img
           src="/letter-images/cherry-sticker.png"
           alt="Cherry sticker"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain"
         />
       </motion.div>
@@ -112,6 +120,8 @@ export default function SectionLetter() {
         <img
           src="/letter-images/billiard-ball-sticker.png"
           alt="Billiard sticker"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain"
         />
       </motion.div>
@@ -127,6 +137,8 @@ export default function SectionLetter() {
         <img
           src="/letter-images/lovely-sticker.png"
           alt="Fingerprint Heart"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain"
         />
       </motion.div>
@@ -142,6 +154,8 @@ export default function SectionLetter() {
         <img
           src="/letter-images/red-corner-pages-layer.png"
           alt="Red tiled corner"
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto object-contain"
         />
       </motion.div>
@@ -163,8 +177,10 @@ export default function SectionLetter() {
           <video
             ref={videoRef}
             src="/letter-images/Netflix.mp4"
+            poster="/you/utama.jpg"
             loop
             playsInline
+            preload="none"
             controls
             onPlay={handleVideoPlay}
             onPause={handleVideoPause}

@@ -1,14 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Patrick+Hand&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap');
-
 /* SINTAKSIS BARU TAILWIND v4 */
 @import "tailwindcss";
 
 :root {
-  --font-serif: 'Playfair Display', serif;
-  --font-cursive: 'Great Vibes', cursive;
-  --font-handwriting: 'Patrick Hand', cursive;
-  --font-yellowtail: 'Yellowtail', cursive;
-  
   /* Color Palette */
   --color-cream: #FEF9E1;
   --color-beige: #E5D0AC;
@@ -17,7 +10,7 @@
 }
 
 .yellowtail-regular {
-  font-family: "Yellowtail", cursive;
+  font-family: var(--font-yellowtail), cursive;
   font-weight: 400;
   font-style: normal;
 }

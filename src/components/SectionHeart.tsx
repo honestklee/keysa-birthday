@@ -3,11 +3,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-type HeartMedia = {
-  src: string;
-  type: 'image' | 'video';
-};
-
 const heartPattern = [
   [0, 1, 1, 0, 1, 1, 0],
   [1, 1, 1, 1, 1, 1, 1],
@@ -17,28 +12,17 @@ const heartPattern = [
   [0, 0, 0, 1, 0, 0, 0],
 ];
 
-const mediaFiles: Array<{ filename: string; type: HeartMedia['type'] }> = [
-  { filename: 'IMG_20260712_193751_634.jpg', type: 'image' },
-  { filename: 'utama.jpg', type: 'image' },
-  { filename: 'WhatsApp Image 2026-10-16 at 00.32.29.jpeg', type: 'image' },
-  { filename: 'WhatsApp Image 2026-10-16 at 00.32.35.jpeg', type: 'image' },
-  { filename: 'WhatsApp Image 2026-10-18 at 13.49.26.jpeg', type: 'image' },
-  { filename: 'WhatsApp Image 2026-10-18 at 13.49.27.jpeg', type: 'image' },
-  { filename: 'WhatsApp Image 2026-10-18 at 13.49.28.jpeg', type: 'image' },
-  { filename: 'WhatsApp Video 2026-10-16 at 00.32.24 (2).mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-16 at 00.32.24.mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-16 at 00.32.25 (2).mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-16 at 00.32.28 (2).mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-16 at 00.32.37.mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-16 at 00.37.04.mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-18 at 14.04.09.mp4', type: 'video' },
-  { filename: 'WhatsApp Video 2026-10-18 at 14.04.44.mp4', type: 'video' },
+const mediaFiles = [
+  'IMG_20260712_193751_634.jpg',
+  'utama.jpg',
+  'WhatsApp Image 2026-10-16 at 00.32.29.jpeg',
+  'WhatsApp Image 2026-10-16 at 00.32.35.jpeg',
+  'WhatsApp Image 2026-10-18 at 13.49.26.jpeg',
+  'WhatsApp Image 2026-10-18 at 13.49.27.jpeg',
+  'WhatsApp Image 2026-10-18 at 13.49.28.jpeg',
 ];
 
-const heartMedia: HeartMedia[] = mediaFiles.map(({ filename, type }) => ({
-  src: `/you/${encodeURIComponent(filename)}`,
-  type,
-}));
+const heartMedia = mediaFiles.map(filename => `/you/${encodeURIComponent(filename)}`);
 
 const totalPhotoSlots = heartPattern.flat().filter(cell => cell === 1).length;
 const assignedHeartMedia = Array.from(
@@ -115,39 +99,18 @@ export default function SectionHeart() {
                 const photoSeqId = photoSequenceCounter++;
                 const currentMedia = assignedHeartMedia[photoSeqId];
                 return (
-                  <motion.div
+                  <div
                     key={`${rIdx}-${cIdx}`}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ 
-                      delay: photoSeqId * 0.045, 
-                      duration: 0.35,
-                      type: 'spring',
-                      stiffness: 110,
-                      damping: 12
-                    }}
-                    whileHover={{ scale: 1.15, zIndex: 10 }}
-                    className="w-full h-full bg-[#E5D0AC] border-[0.5px] border-[#FEF9E1] overflow-hidden shadow-sm rounded-sm"
+                    className="w-full h-full bg-[#E5D0AC] border-[0.5px] border-[#FEF9E1] overflow-hidden shadow-sm rounded-sm transition-transform hover:scale-110 hover:z-10"
                   >
-                    {currentMedia.type === 'video' ? (
-                      <video
-                        src={currentMedia.src}
-                        aria-label="Video memory"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-full object-cover filter grayscale contrast-125 hover:filter-none transition-all duration-300"
-                      />
-                    ) : (
-                      <img
-                        src={currentMedia.src}
-                        alt="Grid memory"
-                        className="w-full h-full object-cover filter grayscale contrast-125 hover:filter-none transition-all duration-300"
-                      />
-                    )}
-                  </motion.div>
+                    <img
+                      src={currentMedia}
+                      alt="Grid memory"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover grayscale contrast-125 hover:filter-none transition-all duration-300"
+                    />
+                  </div>
                 );
               } else {
                 return <div key={`${rIdx}-${cIdx}`} className="w-full h-full" />;

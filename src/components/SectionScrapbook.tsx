@@ -24,11 +24,11 @@ export default function SectionScrapbook() {
   // Candle Blow States
   const [isLit, setIsLit] = useState(true);
   const [showSmoke, setShowSmoke] = useState(false);
-  const [particles, setParticles] = useState<{ id: number; x: number; y: number; color: string; size: number; rotation: number }[]>([]);
+  const [particles, setParticles] = useState<{ id: number; x: number; y: number; color: string; size: number; rotation: number; duration: number }[]>([]);
 
   const triggerConfetti = () => {
     const colors = ['#FFC0CB', '#FFD700', '#ADFF2F', '#00FFFF', '#FF69B4', '#FEF9E1', '#E5D0AC', '#A31D1D'];
-    const newParticles = Array.from({ length: 60 }).map((_, i) => {
+    const newParticles = Array.from({ length: 36 }).map((_, i) => {
       const angle = Math.random() * Math.PI * 2;
       const distance = 30 + Math.random() * 120;
       const destX = Math.cos(angle) * distance;
@@ -41,6 +41,7 @@ export default function SectionScrapbook() {
         color,
         size: 4 + Math.random() * 8,
         rotation: Math.random() * 360,
+        duration: 1.2 + Math.random() * 0.8,
       };
     });
     setParticles(newParticles);
@@ -108,13 +109,15 @@ export default function SectionScrapbook() {
     <section ref={sectionRef} className="min-h-screen bg-[#6D2323] flex flex-col items-center justify-start pt-10 pb-16 p-4 relative overflow-hidden">
       
       {/* BACKGROUND: bg-maroon-texture */}
-      <img src="/images/bg-maroon-texture.png" alt="" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+      <img src="/images/bg-maroon-texture.png" alt="" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
 
       {/* BOTTOM RIGHT CORNER DECORATION */}
       <div className="absolute bottom-0 right-0 w-[160px] sm:w-[220px] z-10 pointer-events-none">
         <img 
           src="/images/letter-corner-bawah-kanan.png" 
           alt="" 
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto"
         />
       </div>
@@ -129,6 +132,8 @@ export default function SectionScrapbook() {
         <img 
           src="/images/sunshine-tape-removebg-preview.png" 
           alt="You are my Sunshine" 
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto"
         />
       </motion.div>
@@ -147,6 +152,8 @@ export default function SectionScrapbook() {
           <img 
             src="/images/love-letter-layer-removebg-preview.png" 
             alt="Love letter layer" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </motion.div>
@@ -162,6 +169,8 @@ export default function SectionScrapbook() {
           <img 
             src="/images/cop-letter-layer-removebg-preview.png" 
             alt="Cop letter layer" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </motion.div>
@@ -185,6 +194,8 @@ export default function SectionScrapbook() {
               <video
                 ref={videoRef}
                 src="/images/BirthdayMe.mp4"
+                poster="/you/utama.jpg"
+                preload="none"
                 playsInline
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
@@ -201,6 +212,8 @@ export default function SectionScrapbook() {
             <img 
               src="/images/picture-photo-frame.png" 
               alt="Main photo frame" 
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
             />
 
@@ -253,6 +266,8 @@ export default function SectionScrapbook() {
           <img 
             src="/images/star.-stciker-removebg-preview.png" 
             alt="Star stickers" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </motion.div>
@@ -268,6 +283,8 @@ export default function SectionScrapbook() {
           <img 
             src="/images/cat-sticker-removebg-preview.png" 
             alt="Cat sticker" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </motion.div>
@@ -305,7 +322,7 @@ export default function SectionScrapbook() {
                 opacity: [1, 1, 0]
               }}
               transition={{
-                duration: 1.2 + Math.random() * 0.8,
+                duration: p.duration,
                 ease: "easeOut"
               }}
               className="absolute rounded-sm z-50 pointer-events-none"

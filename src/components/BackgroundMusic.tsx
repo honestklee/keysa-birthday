@@ -10,9 +10,11 @@ export default function BackgroundMusic() {
 
   useEffect(() => {
     // Create the audio loop element
-    const audio = new Audio('/music/Backstreet_Boys_-_Shape_of_My_Heart_(mp3.pm).mp3');
+    const audio = new Audio();
+    audio.preload = 'none';
     audio.loop = true;
     audio.volume = 0.55;
+    audio.src = '/music/Backstreet_Boys_-_Shape_of_My_Heart_(mp3.pm).mp3';
     audioRef.current = audio;
 
     const removeAutoplayListeners = () => {
