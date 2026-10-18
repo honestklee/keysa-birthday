@@ -177,7 +177,6 @@ export default function SectionLetter() {
           <video
             ref={videoRef}
             src="/letter-images/Netflix.mp4"
-            poster="/you/utama.jpg"
             loop
             playsInline
             preload="none"

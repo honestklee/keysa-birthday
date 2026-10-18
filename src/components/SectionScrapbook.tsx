@@ -194,7 +194,6 @@ export default function SectionScrapbook() {
               <video
                 ref={videoRef}
                 src="/images/BirthdayMe.mp4"
-                poster="/you/utama.jpg"
                 preload="none"
                 playsInline
                 onPlay={handleVideoPlay}
